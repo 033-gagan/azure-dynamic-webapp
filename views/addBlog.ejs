@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head') %>
+  <title>Write — Quill</title>
+  <style>
+    .write-page { padding: 3.5rem 0 5rem; }
+
+    .write-header { margin-bottom: 2.5rem; }
+    .write-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 0.6rem;
+    }
+    .write-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 900;
+      color: var(--text); letter-spacing: -0.03em;
+    }
+
+    .write-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+    }
+    .write-card .mb-4 { margin-bottom: 1.75rem !important; }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 6px;
+      padding: 2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .upload-area:hover {
+      border-color: rgba(201,169,110,0.4);
+      background: rgba(201,169,110,0.04);
+    }
+    .upload-icon { font-size: 2rem; color: var(--muted); margin-bottom: 0.5rem; display: block; }
+    .upload-text { font-size: 0.85rem; color: var(--muted); }
+    .upload-text strong { color: var(--accent); }
+    .upload-area input[type="file"] {
+      position: absolute; inset: 0;
+      opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+
+    .title-input {
+      font-family: var(--font-display) !important;
+      font-size: 1.3rem !important;
+      font-weight: 700 !important;
+    }
+
+    .body-textarea { min-height: 280px; font-size: 1rem !important; line-height: 1.8 !important; resize: vertical; }
+
+    .write-actions {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .write-hint { font-size: 0.8rem; color: var(--muted); }
+
+    #preview-img {
+      max-width: 100%; max-height: 200px; object-fit: cover;
+      border-radius: 4px; margin-top: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./partials/nav') %>
+
+  <div class="container write-page" style="max-width:760px">
+    <div class="write-header page-fade">
+      <span class="write-eyebrow"><i class="bi bi-pencil-square me-1"></i>New Post</span>
+      <h1 class="write-title">Write your story</h1>
+    </div>
+
+    <div class="write-card page-fade2">
+      <form action="/blog/add-blog" method="post" enctype="multipart/form-data">
+
+        <div class="mb-4">
+          <label for="coverImage" class="form-label">Cover Image</label>
+          <div class="upload-area">
+            <i class="bi bi-image upload-icon"></i>
+            <p class="upload-text"><strong>Click to upload</strong> or drag &amp; drop</p>
+            <p class="upload-text" style="margin-top:0.2rem;font-size:0.75rem;">PNG, JPG, WEBP — recommended 1200×630</p>
+            <input type="file" id="coverImage" name="coverImage" accept="image/*">
+          </div>
+          <img id="preview-img" src="" alt="Preview">
+        </div>
+
+        <div class="mb-4">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control title-input" id="title" name="title"
+            placeholder="A captivating title…" />
+        </div>
+
+        <div class="mb-4">
+          <label for="body" class="form-label">Content</label>
+          <textarea class="form-control body-textarea" id="body" name="body"
+            placeholder="Tell your story…"></textarea>
+        </div>
+
+        <div class="write-actions">
+          <span class="write-hint"><i class="bi bi-info-circle me-1"></i>Your post will be published immediately.</span>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send me-1"></i>Publish Story
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Image preview — UI only, no logic change
+    document.getElementById('coverImage').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById('preview-img');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+
+  <%- include('./partials/script') %>
+</body>
+</html>

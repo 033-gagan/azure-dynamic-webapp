@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="/">Quill</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link active" href="/"><i class="bi bi-house me-1"></i>Home</a>
+        </li>
+        <% if (locals.user) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/blog/add-blog"><i class="bi bi-pencil-square me-1"></i>Write</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="<%= locals.user.profileImageURL %>" width="28" height="28"
+                style="border-radius:50%;border:1.5px solid var(--accent);object-fit:cover;" alt="avatar">
+              <span><%= locals.user.username %></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <span class="dropdown-item" style="color:var(--muted);cursor:default;font-size:0.8rem;">
+                  <i class="bi bi-person me-1"></i><%= locals.user.fullName %>
+                </span>
+              </li>
+              <li><hr class="dropdown-divider" style="border-color:var(--border);margin:0.3rem 0;"></li>
+              <li><a class="dropdown-item" href="/user/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/signup">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-nav-cta px-3 ms-1" href="/user/signin">Sign In</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<% if (locals.error) { %>
+  <div class="container mt-3">
+    <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+      <i class="bi bi-exclamation-circle"></i>
+      <%= locals.error %>
+    </div>
+  </div>
+<% } %>
